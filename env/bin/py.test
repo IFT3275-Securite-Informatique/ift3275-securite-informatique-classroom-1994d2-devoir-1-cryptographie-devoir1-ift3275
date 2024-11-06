@@ -1,0 +1,11 @@
+#!/bin/sh
+'''exec' "/Users/byungsukmin/Desktop/udem/INF/IFT3275/Devoirs/Devoir 1/devoir-1-cryptographie-shayan-min/env/bin/python3.13" "$0" "$@" #'''
+# -*- coding: utf-8 -*-
+import re
+import sys
+
+from pytest import console_main
+
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.exit(console_main())

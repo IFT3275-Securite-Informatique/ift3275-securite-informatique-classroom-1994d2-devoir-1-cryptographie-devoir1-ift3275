@@ -1,0 +1,16 @@
+# tcl pkg-config source file
+
+prefix=/Users/byungsukmin/Desktop/udem/INF/IFT3275/Devoirs/Devoir 1/devoir-1-cryptographie-shayan-min/env
+exec_prefix=/Users/byungsukmin/Desktop/udem/INF/IFT3275/Devoirs/Devoir 1/devoir-1-cryptographie-shayan-min/env
+libdir=/Users/byungsukmin/Desktop/udem/INF/IFT3275/Devoirs/Devoir 1/devoir-1-cryptographie-shayan-min/env/lib
+includedir=${prefix}/include
+libfile=libtcl8.6.dylib
+
+Name: Tool Command Language
+Description: Tcl is a powerful, easy-to-learn dynamic programming language, suitable for a wide range of uses.
+URL: https://www.tcl-lang.org/
+Version: 8.6.13
+Requires.private: zlib >= 1.2.3
+Libs: -L${libdir} -ltcl8.6 -ltclstub8.6
+Libs.private:  -lz  -lpthread -framework CoreFoundation 
+Cflags: -I${includedir}
