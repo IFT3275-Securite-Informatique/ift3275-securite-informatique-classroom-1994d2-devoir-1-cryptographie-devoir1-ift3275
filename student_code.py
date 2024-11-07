@@ -25,25 +25,25 @@ def decrypt(C):
   C_cutBlock = cutCypherText(C)
   #c_analysis = ngrams_count_plus(C_cutBlock, 2,5)
 
-  print("Counting ngram_3")
-  C_mono_Count = ngrams_count(C_cutBlock, 3,5, 50)
+  print("Counting ngram_2")
+  C_mono_Count = ngrams_count(C_cutBlock, 2,5, 50)
   C_mono_Freq = []
 
-  print("Analyzing ngram-3 Frequency Data")
+  print("Analyzing ngram-2 Frequency Data")
   for x in C_mono_Count:
-     C_mono_Freq.append(checkFrequency(C_cutBlock, x[0], x[1], 3, False))
+     C_mono_Freq.append(checkFrequency(C_cutBlock, x[0], x[1], 2, False))
 
   dictionary_1 = {}
-  print("Building ngram-3 Dictionary")
-  var = buildNgramDictionary(3, [stats_ngram_6], C_mono_Freq, 20, True)
+  print("Building ngram-2 Dictionary")
+  var = buildNgramDictionary(2, [stats_ngram_4], C_mono_Freq, 20, True)
 
 
-  dictionary_3 = var[0]
+  dictionary_2 = var[0]
 
   for x in var[1]:
    dictionary_1.update(x)
 
-  print(dictionary_3)
+  print(dictionary_2)
   print(dictionary_1)
   '''
   print("Comparing ngram-2 ....")
@@ -90,10 +90,10 @@ def decrypt(C):
         break
   '''
   print("Deciphering ....")     
-  mdec = decipher_with_dict(C_cutBlock, dictionary_3,3)
+  #mdec = decipher_with_dict(C_cutBlock, dictionary_3,3)
   mdec = decipher_with_dict(C_cutBlock, dictionary_1,1)
 
-  print(mdec)
+  #print(mdec)
   mfinal = []
   for m in mdec:
     if isinstance(m, int): 
@@ -102,10 +102,10 @@ def decrypt(C):
       mfinal.append(m)
       #print("replaced word: "+m)
 
-  print(mfinal)
+  #print(mfinal)
 
   M="".join(mfinal)
-  print(M)
+  #print(M)
   #entrez votre code ici.
   #Vous pouvez créer des fonctions auxiliaires et adapter le code à votre façon mais decrypt dois renvoyer le message décrypté
 
@@ -184,8 +184,8 @@ def buildNgramDictionary(cypherWordLength, stats, cypherFreqArray, statsDelimite
 
             if (equivalentCut and len(str(y[0]))%2 == 0):
               dict_temp = {}
-              for i in range(len(str(y[0])) // 2):
-                word_cut = str(word[i])
+              for i in range(cypherWordLength):
+                word_cut = str(int(x[0][i]))
                 cy_cut = str(str(y[0])[i*2:i*2+2])
                 print("equivalent cut add ["+str(word_cut)+"] and ["+str(cy_cut)+"]!!!!")
                 addToDict(dict_temp, word_cut, cy_cut)
