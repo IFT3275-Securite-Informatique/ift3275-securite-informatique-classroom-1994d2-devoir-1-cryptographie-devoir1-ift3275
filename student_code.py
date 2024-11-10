@@ -46,7 +46,7 @@ def calculer_frequences_moyennes(urls, symboles):
     return frequences_moyennes
 
 #Analyse les fréquences des séquences de longueur donnée dans le texte chiffré.
-def analyser_frequences_chiffrees(longueur_sequence=8):
+def analyser_frequences_chiffrees(C, longueur_sequence=8):
     compteur = Counter()
     for i in range(0, len(C), longueur_sequence):
         segment = C[i:i + longueur_sequence]
