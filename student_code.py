@@ -1,11 +1,23 @@
 from crypt import *
-import random as rnd
-import math
-import requests
-from collections import Counter
 
+key_now = {}
+#Générer la liste de symboles (assumant qu'on doit utiliser les uni et bisymboles fixées par le professeur)
+def list_fixed_symboles():
+    urls= ["https://www.gutenberg.org/ebooks/13846.txt.utf-8",
+        "https://www.gutenberg.org/ebooks/4650.txt.utf-8"]
+    text = ""
+    for url in urls:
+        text_loader = load_text_from_web(url)
+        if text_loader:
+            text += text_loader
 
-key_now ={}
+    caracteres = list(set(list(text)))
+    nb_caracteres = len(caracteres)
+    nb_bicaracteres = 256 - nb_caracteres
+    bicaracteres = [item for item, _ in Counter(cut_string_into_pairs(text)).most_common(nb_bicaracteres)]
+    symboles = caracteres + bicaracteres
+    return symboles
+symboles= list_fixed_symboles()
 
 def compter_frequences(texte, symboles):
     compteur = Counter()
@@ -33,11 +45,8 @@ def calculer_frequences_moyennes(urls, symboles):
     frequences_moyennes = calculer_frequences_relatives(compteur_global, total_global)
     return frequences_moyennes
 
-
-def analyser_frequences_chiffrees(C, longueur_sequence=8):
-    """
-    Analyse les fréquences des séquences de longueur donnée dans le texte chiffré.
-    """
+#Analyse les fréquences des séquences de longueur donnée dans le texte chiffré.
+def analyser_frequences_chiffrees(longueur_sequence=8):
     compteur = Counter()
     for i in range(0, len(C), longueur_sequence):
         segment = C[i:i + longueur_sequence]
@@ -46,11 +55,8 @@ def analyser_frequences_chiffrees(C, longueur_sequence=8):
     frequences_chiffrees = {segment: count / total for segment, count in compteur.items()}
     return frequences_chiffrees
 
-
+#Associe les séquences chiffrées aux symboles français basés sur leurs fréquences.
 def construire_dictionnaire_dechiffrement(freq_chiffrees, freq_moyennes):
-    """
-    Associe les séquences chiffrées aux symboles français basés sur leurs fréquences.
-    """
     # Trier les séquences chiffrées par fréquence décroissante
     sequences_tries = [k for k, v in sorted(freq_chiffrees.items(), key=lambda x: x[1], reverse=True)]
 
@@ -69,6 +75,7 @@ def qualite_decrypt_text(M, dictionnaire_dechiffrement):
         score+= dictionnaire_dechiffrement.get(symbol,0)
     return score
 
+#Utilise l'attaque probabilistique pour trouver la meilleure clé(?)
 def attack_proba(C, dictionnaire_dechiffrement, max_iteration=1000):
     global key_now
     best_key = key_now.copy()
@@ -98,9 +105,8 @@ def attack_proba(C, dictionnaire_dechiffrement, max_iteration=1000):
 
     key_now = best_key
 
-
-def initialise_decrypt_key(C,symboles):
-    # Générer le dictionnaire dynamiquement
+def initialise_decrypt_key(C):
+    # Listes des URLs pour calculer les fréquences moyennes
     urls = [
         "https://www.gutenberg.org/ebooks/135.txt.utf-8",  # Les Misérables - Victor Hugo
         "https://www.gutenberg.org/ebooks/19942.txt.utf-8",  # Candide - Voltaire
@@ -114,26 +120,27 @@ def initialise_decrypt_key(C,symboles):
         "https://www.gutenberg.org/cache/epub/20262/pg20262.txt"
         #possible d'ajouter d'autres urls pour plus de précision sur la fréquence des symboles
     ]
-    symboles_fixes = symboles
-    frequences_moyennes = calculer_frequences_moyennes(urls, symboles_fixes)
+    frequences_moyennes = calculer_frequences_moyennes(urls, list_fixed_symboles())
     freq_chiffrees = analyser_frequences_chiffrees(C)
     global key_now
     key_now = construire_dictionnaire_dechiffrement(freq_chiffrees, frequences_moyennes)
 
-
-
 def decrypt(C):
-
-    #Initialiser la clé de déchiffrement
+    # Initialiser la clé de déchiffrement
     initialise_decrypt_key(C)
 
-    dictionnaire_dechiffrement = construire_dictionnaire_dechiffrement(calculer_frequences_moyennes(symboles), analyser_frequences_chiffrees(C))
+    dictionnaire_dechiffrement = key_now.copy()
 
-    attack_proba(C, dictionnaire_dechiffrement,1000)
+    attack_proba( C, dictionnaire_dechiffrement, 1000)
 
-    M=""
+    M = ""
     segment_length = 8
     for i in range(0, len(C), segment_length):
-        segment = C[i:i+segment_length]
-        M+= key_now.get(segment,'?')
+        segment = C[i:i + segment_length]
+        M += key_now.get(segment, '?')
     return M
+
+#Inclure le cryptogramme ici
+C = "Cryptogramme quel conque donné"
+decrypted_text= decrypt(C)
+print(decrypted_text)
