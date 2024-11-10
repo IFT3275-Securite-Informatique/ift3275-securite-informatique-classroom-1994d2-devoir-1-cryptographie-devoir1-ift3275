@@ -1,6 +1,8 @@
 from crypt import *
 import random as rnd
 import math
+import requests
+from collections import Counter
 
 
 key_now ={}
@@ -62,12 +64,12 @@ def construire_dictionnaire_dechiffrement(freq_chiffrees, freq_moyennes):
 #Calcule la qualité du code déchiffré
 def qualite_decrypt_text(M, dictionnaire_dechiffrement):
     score = 0
-    for i in range(len(M-1)):
+    for i in range(len(M)-1):
         symbol = M[i]
         score+= dictionnaire_dechiffrement.get(symbol,0)
     return score
 
-def attack_proba(C, dictionnaire_dechiffrement, max_iteration):
+def attack_proba(C, dictionnaire_dechiffrement, max_iteration=1000):
     global key_now
     best_key = key_now.copy()
     best_score = qualite_decrypt_text(decrypt(C), dictionnaire_dechiffrement)
@@ -97,17 +99,9 @@ def attack_proba(C, dictionnaire_dechiffrement, max_iteration):
     key_now = best_key
 
 
-def initialise_decrypt_key(C):
-    pass
-
-
-def decrypt(C):
-
-    #Initialiser la clé de déchiffrement
-    initialise_decrypt_key(C)
-
-    #Générer le dictionnaire dynamiquement
-    urls= [
+def initialise_decrypt_key(C,symboles):
+    # Générer le dictionnaire dynamiquement
+    urls = [
         "https://www.gutenberg.org/ebooks/135.txt.utf-8",  # Les Misérables - Victor Hugo
         "https://www.gutenberg.org/ebooks/19942.txt.utf-8",  # Candide - Voltaire
         "https://www.gutenberg.org/cache/epub/5423/pg5423.txt",
@@ -118,8 +112,22 @@ def decrypt(C):
         "https://www.gutenberg.org/cache/epub/41211/pg41211.txt",
         "https://www.gutenberg.org/cache/epub/70891/pg70891.txt",
         "https://www.gutenberg.org/cache/epub/20262/pg20262.txt"
+        #possible d'ajouter d'autres urls pour plus de précision sur la fréquence des symboles
     ]
-    dictionnaire_dechiffrement = construire_dictionnaire_dechiffrement(calculer_frequences_moyennes(urls,symboles), analyser_frequences_chiffrees(C))
+    symboles_fixes = symboles
+    frequences_moyennes = calculer_frequences_moyennes(urls, symboles_fixes)
+    freq_chiffrees = analyser_frequences_chiffrees(C)
+    global key_now
+    key_now = construire_dictionnaire_dechiffrement(freq_chiffrees, frequences_moyennes)
+
+
+
+def decrypt(C):
+
+    #Initialiser la clé de déchiffrement
+    initialise_decrypt_key(C)
+
+    dictionnaire_dechiffrement = construire_dictionnaire_dechiffrement(calculer_frequences_moyennes(symboles), analyser_frequences_chiffrees(C))
 
     attack_proba(C, dictionnaire_dechiffrement,1000)
 
