@@ -6,3 +6,7 @@ cours sécurité informatique - cryptographie
 - Les valeurs pour les textes ainsi que la seuil d'acceptation va être décidé lors de la correction
 
 # Le code autograder est juste un guideline de comment le code sera corrigé.
+
+Le code final se trouve dans la branche Xavier. Il se trouve là, car il prend tellement de temps à rouler qu'on aura pas le temps de merge avant la date de remise.
+
+Désolé Arpad
