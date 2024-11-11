@@ -2,7 +2,7 @@ import random
 import time
 import unittest
 from difflib import SequenceMatcher, unified_diff
-from crypt import *
+from crypt import * # type: ignore
 from student_code import decrypt  # Remplacer par le nom de la fonction de déchiffrement
 
 
@@ -78,7 +78,7 @@ class TestDecryption(unittest.TestCase):
         # Imprimer les différences si la similarité est inférieure à 99.5 %
         if similarity < 0.995:
             print("Différences entre les messages :")
-            print_diff(original_message, decrypted_message)
+            #print_diff(original_message, decrypted_message)
 
         # Vérifier que la similarité entre le message original et le message déchiffré est d'au moins 99.5 %
         self.assertGreaterEqual(similarity, 0.995,

@@ -96,3 +96,4 @@ def chiffrer2(M, K) -> str:
 
 def meme_cles(d1, d2):
     return set(d1.keys()) == set(d2.keys())
+ # type: ignore
