@@ -1208,7 +1208,7 @@ def decrypt(encoded_text):
 
     # --------------------- PARAMÈTRES GÉNÉRAUX -------------------------------
     # Nombre minimum de bytes connus désirés
-    desired_minimum_known_bytes = 100
+    desired_minimum_known_bytes = len(byte_probabilities)
 
     # Après combien de substitutions de combinaisons on passe aux fréquences, et vice-versa
     # On veut diminuer le nombre de substitutions consécutives par la même approche pour éviter le plus possible les erreurs
