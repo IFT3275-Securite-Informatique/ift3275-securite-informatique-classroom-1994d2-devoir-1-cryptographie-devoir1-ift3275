@@ -6,7 +6,6 @@ from difflib import SequenceMatcher
 import logging
 from typing import List, Dict
 import spacy
-import matplotlib.pyplot as plt
 import itertools
 from crypt import *
 
