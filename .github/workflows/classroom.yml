@@ -1,0 +1,36 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Download French language model for spaCy
+      run: |
+        python -m spacy download fr_core_news_sm
+    - name: test 1
+      id: test-1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test 1
+        setup-command: ''
+        command: "./run_command"
+        timeout: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST-1_RESULTS: "${{steps.test-1.outputs.result}}"
+      with:
+        runners: test-1
