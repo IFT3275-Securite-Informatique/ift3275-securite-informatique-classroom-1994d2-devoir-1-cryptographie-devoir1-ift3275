@@ -14,113 +14,22 @@ def decrypt(C):
   #url = "https://www.gutenberg.org/ebooks/4650.txt.utf-8"  # Example URL (replace with your desired URL)
   #corpus = corpus + load_text_from_web(url)
 
-  # load precalculated data
-  #print("Loading CSV")
+  '''
+  # load precalculated data (these data are no longer useful)
+  # I originally intend to calculate all n-gram (and words) possibilities, write in csv, then read on need.
+  # but... that approach did not bear fruit
+  print("Loading CSV")
   stats_ngram_1 = loadStatsNgram('freq_ngram_1.csv')
   stats_ngram_2 = loadStatsNgram('freq_ngram_2.csv')
   stats_ngram_3 = loadStatsNgram('freq_ngram_3.csv')
   stats_ngram_4 = loadStatsNgram('freq_ngram_4.csv')
   stats_ngram_5 = loadStatsNgram('freq_ngram_5.csv')
   stats_ngram_6 = loadStatsNgram('freq_ngram_6.csv')
-  #print("Parsing Cypher")
+  '''
+
+  # Cut the raw data into UTF-8 datablock
   C_cutBlock = cutCypherText(C)
-  #c_analysis = ngrams_count_plus(C_cutBlock, 2,5)
 
-  '''
-  print("Counting ngram_1")
-  C_mono_Count = ngrams_count(C_cutBlock, 1,5, 256)
-  C_mono_Freq = []
-
-  print("Analyzing ngram-1 Frequency Data")
-  for x in C_mono_Count:
-     C_mono_Freq.append(checkFrequency(C_cutBlock, x[0], x[1], 1, False))
-
-  print("Counting complete")
-  for x in C_mono_Freq:
-     print(x)
-
-  print("\n\n\n")
-  print("Counting ngram_2")
-  C_bi_Count = ngrams_count(C_cutBlock, 2,5, 300)
-  C_bi_Freq = []
-
-  print("Analyzing ngram-2 Frequency Data")
-  for x in C_bi_Count:
-     C_bi_Freq.append(checkFrequency(C_cutBlock, x[0], x[1], 2, False))
-
-  print("Counting complete")
-  for x in C_bi_Freq:
-     print(x)
-
-  print("\n\n\n")
-  '''
-  '''
-  cypher_repeat_1_mostFrequent = []
-
-
-  print("-- Mono-Bi 1 repeat")
-  mono_b1 = []
-  mono_b1.append(checkRepeat(C_cutBlock,1,0,-1, True,0, False))
-  mono_b1.append(checkRepeat(C_cutBlock,1,1,-1, True,0, False))
-  mono_b1.append(checkRepeat(C_cutBlock,1,2,-1, True,0, False))
-  mono_b1.append(checkRepeat(C_cutBlock,1,3,-1, True,0, False))
-  mono_b1.append(checkRepeat(C_cutBlock,1,4,-1, True,0, False))
-  mono_b1.append(checkRepeat(C_cutBlock,1,5,-1, True,0, False))
-  mono_b1.append(checkRepeat(C_cutBlock,1,6,-1, True,0, False))
-  mono_b1.append(checkRepeat(C_cutBlock,1,7,-1, True,0, False))
-
-  print("-- Mono-Bi 2 repeat")
-  mono_b2 = []
-  mono_b2.append(checkRepeat(C_cutBlock,2,0,-1, True,0, False))
-  mono_b2.append(checkRepeat(C_cutBlock,2,1,-1, True,0, False))
-  mono_b2.append(checkRepeat(C_cutBlock,2,2,-1, True,0, False))
-  mono_b2.append(checkRepeat(C_cutBlock,2,3,-1, True,0, False))
-  mono_b2.append(checkRepeat(C_cutBlock,2,4,-1, True,0, False))
-  mono_b2.append(checkRepeat(C_cutBlock,2,5,-1, True,0, False))
-  mono_b2.append(checkRepeat(C_cutBlock,2,6,-1, True,0, False))
-  mono_b2.append(checkRepeat(C_cutBlock,2,7,-1, True,0, False))
-
-  print("-- Mono-Bi 3 repeat")
-  checkRepeat(C_cutBlock,3,0,-1, True,0, False)
-  checkRepeat(C_cutBlock,3,1,-1, True,0, False)
-  checkRepeat(C_cutBlock,3,2,-1, True,0, False)
-  checkRepeat(C_cutBlock,3,3,-1, True,0, False)
-  checkRepeat(C_cutBlock,3,4,-1, True,0, False)
-  checkRepeat(C_cutBlock,3,5,-1, True,0, False)
-  checkRepeat(C_cutBlock,3,6,-1, True,0, False)
-  checkRepeat(C_cutBlock,3,7,-1, True,0, False)
-
-  print("-- Mono-Bi 4 repeat")
-  checkRepeat(C_cutBlock,4,0,-1, True,0, False)
-  checkRepeat(C_cutBlock,4,1,-1, True,0, False)
-  checkRepeat(C_cutBlock,4,2,-1, True,0, False)
-  checkRepeat(C_cutBlock,4,3,-1, True,0, False)
-  checkRepeat(C_cutBlock,4,4,-1, True,0, False)
-  checkRepeat(C_cutBlock,4,5,-1, True,0, False)
-  checkRepeat(C_cutBlock,4,6,-1, True,0, False)
-  checkRepeat(C_cutBlock,4,7,-1, True,0, False)
-
-
-  print("-- Mono-Bi 5 repeat")
-  checkRepeat(C_cutBlock,5,0,-1, True,0, False)
-  checkRepeat(C_cutBlock,5,1,-1, True,0, False)
-  checkRepeat(C_cutBlock,5,2,-1, True,0, False)
-  checkRepeat(C_cutBlock,5,3,-1, True,0, False)
-  checkRepeat(C_cutBlock,5,4,-1, True,0, False)
-  checkRepeat(C_cutBlock,5,5,-1, True,0, False)
-  checkRepeat(C_cutBlock,5,6,-1, True,0, False)
-  checkRepeat(C_cutBlock,5,7,-1, True,0, False)
-
-  '''
-  #print(wordCountTest(C_cutBlock, 2, 0, 30))
-
-  #corp = [[1],[2],[3],[2],[3],[4],[3],[4],[5]]
-  #w = wordCountTest(corp, 2, 0, 30)
-  #print(w)
-
- # quit()
-  
-  #print("WordCount Test")
   wordCount = []
   wordCount.append(wordCountTest(C_cutBlock, 1, 0))
   wordCount.append(wordCountTest(C_cutBlock, 2, 0))
@@ -128,20 +37,12 @@ def decrypt(C):
   wordCount.append(wordCountTest(C_cutBlock, 4, 0))
   wordCount.append(wordCountTest(C_cutBlock, 5, 0))
   wordCount.append(wordCountTest(C_cutBlock, 6, 0))
-  #wordCount.append(wordCountTest(C_cutBlock, 7, 0, 100))
-  #wordCount.append(wordCountTest(C_cutBlock, 8, 0, 100))
-  #wordCount.append(wordCountTest(C_cutBlock, 9, 0, 100))
-  #wordCount.append(wordCountTest(C_cutBlock, 10, 0, 100))
-  #wordCount.append(wordCountTest(C_cutBlock, 11, 0, 100))
-  #wordCount.append(wordCountTest(C_cutBlock, 12, 0, 100))
-  #for x in wordCount:
-  #   print(x[:30])
 
+  # dictionary that store all decrypt symbols
   dictionary_1 = {}
 
   repeatCount = []
-
-  # find ** in single alphabet descending order. very recursive. very expensive
+  # find repeating symbols in single alphabet descending order. very recursive. very expensive
   for x in wordCount[0]:
     maxRepeat = 1
     repeat = True
@@ -164,17 +65,18 @@ def decrypt(C):
         total = countWord(C_cutBlock, x[0][0],1)
         print(str(x[0][0]) + " max repeat "+str(maxRepeat) + " maximumConsecutive "+ str(maxlen) + " total "+str(total))
 
-        if maxlen == 16:
+        if maxlen == 16:  # derived from the fact the corpus has a max repeat of 16 ' '
           print("we might have _")
           addToDict(dictionary_1, str(x[0][0]), ' ')
-        elif maxlen == 38:
+        elif maxlen == 38:  # derived from the fact the corpus has a max repeat of 38 ' '
           print("we might have *")
           addToDict(dictionary_1, str(x[0][0]), '*')
         else:
-           repeatCount.append([str(x[0][0]), total])
+          repeatCount.append([str(x[0][0]), total])
     
   #print(repeatCount)
 
+  # Find \r\n in all repeating
   eol = -1
   if (len(repeatCount)>0):
     sortedRepeat = sorted(repeatCount, key=lambda x: x[1], reverse=True)
@@ -183,14 +85,15 @@ def decrypt(C):
     for x in sortedRepeat:
         if str(x[0]) in dictionary_1: continue
         if index == 0 : 
-           addToDict(dictionary_1, str(x[0]), '\r\n')
-           eol = x[0]
-           print("EOL rn FOUND : "+ str(eol))
+            addToDict(dictionary_1, str(x[0]), '\r\n')
+            eol = x[0]
+            print("EOL rn FOUND : "+ str(eol))
+            break
         # this one is correct guess
         #elif index == 1 : addToDict(dictionary_1, str(x[0]), '\r')
         #elif index == 2 : addToDict(dictionary_1, str(x[0]), '*')
         #else : print("repeatcount exceeding 3 error please check ")
-        break
+
     
 
   eol_period = -1
@@ -235,6 +138,8 @@ def decrypt(C):
 
   if we can find quelqu, then we say we found the qu
   if we can't find quelqu, then we assume we have made the mistake, and change it to - C
+
+  ...but really, if we can't find qu, then its a failure.
   '''
 
   symbol_es = -1
@@ -285,288 +190,6 @@ def decrypt(C):
           print("estr FOUND : "+ str(symbol_estr))
           addToDict(dictionary_1, str(symbol_estr), 't\r') 
 
-  '''
-  # we didnt catch all eol tho. we missing the in-paragraph '. '
-  if (eol_period != -1):
-
-    # ?. using only EOL period is hard to find this.    
-    eol_count = countEOL(C_cutBlock, eol_period, 1,  1)
-    #print(eol_count)
-    eol_sorted = sortEOL(eol_count)
-    print(eol_sorted)
-
-    index = 0
-    for x in eol_sorted:
-      if str(x[0]) in dictionary_1: continue
-      if index == 0: addToDict(dictionary_1, str(x[0]), '')
-      #elif index == 1: addToDict(dictionary_1, str(x[0]), 'nt')
-      #elif index == 2: addToDict(dictionary_1, str(x[0]), 'le')
-      else: break
-      index += 1
-
-    # ?. using only EOL period is hard to find this.    
-    eol_count = countEOL(C_cutBlock, eol_period, 1,  -1)
-    #print(eol_count)
-    eol_sorted = sortEOL(eol_count)
-    print(eol_sorted)
-
-    index = 0
-    for x in eol_sorted:
-      if str(x[0]) in dictionary_1: continue
-      if index == 0: addToDict(dictionary_1, str(x[0]), '')
-      #elif index == 1: addToDict(dictionary_1, str(x[0]), 'nt')
-      #elif index == 2: addToDict(dictionary_1, str(x[0]), 'le')
-      else: break
-      index += 1
-  '''
-  '''
-  ,
-  ,_
-  e,
-  s,
-
-
-  CheckRepeat strat
-  use the difference between checkRepeat x and checkRepeat x+1 to find some stuff.
-  for ngram_1 the most popular recurring word is '_',
-  for ngram_2 the most popular is 'e_'
-  but from previous experiences, this combination is very likely to get masked. There is probably a dozen combination of '?_'.
-
-  So, let's target the ngram_3 and beyond, where the most popular word is 'que'.
-  From the list of most frequent ngram_2, we know that '_q', 'qu', 'ue', 'e_' are all very popular (all 4 are among the first 25 most commons).
-  Considering the logic of encoding algorithm, where it prioritize encoding 2 word with 1 symbol, we can reasonably assume that:
-  ' que' will always be encoded in 2 symbol.
-  'que ' will always be encoded in 2 symbol.
-
-  que does not repeat at 0 interval
-
-  S check
-  this might works 1/10 time. but result is not accurate. FAIL
-
-  arr = np.unique(cypher_repeat_1_mostFrequent, return_counts=True)
-  sort = np.flip(arr[1].argsort())
-  # if the most recurring symbol has at least 5/8 appearance
-  # and if it lost the 2nd position
-  # and if it lost 0th position
-  #print(cypher_repeat_1_mostFrequent)
-  #print(arr)
-  #print(sort)
-  #if (arr[1][sort[0]] >= 5 and cypher_repeat_1_mostFrequent[0] != arr[0][sort[0]] and cypher_repeat_1_mostFrequent[2] != arr[0][sort[0]]):
-  if (arr[1][sort[0]] >= 5):
-     #print("WE HAVE A S CANDIDATE "+ str(arr[0][sort[0]]) )
-     addToDict(dictionary_1, str(arr[0][sort[0]]), 'qu')
-
-
-  UPDATE: MY ALGORITHM WASNT WORKING AS INTENDED. AFTER FIX, ALL PREV CONCLUSIONS ARE USELESS
-  '''
-
-  '''
-  NEW CHECKREPEAT STRAT
-
-
-
-
-
-
-  firstIndex = -1
-
-  if len(mono_b2[0]) > 0 and mono_b2[0][0][0][0] == mono_b2[0][0][0][1]:
-    firstIndex = 0
-
-    if len(mono_b2[2]) > 0 and mono_b2[0][0][0][0] == mono_b2[2][0][0][0]:
-      # we have a star
-      #addToDict(dictionary_1, str(mono_b2[0][0][0][0]), '*')
-      # this works reliably.
-      # but, in case the text has no *, this algo might mistake \r\n with *. need finetuning
-
-      # now we check for double space
-      firstIndex += 1
-
-    if len(mono_b2[0]) >= firstIndex + 1 and mono_b2[0][firstIndex][0][0] == mono_b2[0][firstIndex][0][1]:
-        #if len(mono_b2[1]) > 0 and mono_b2[0][0][0][0] == mono_b2[2][0][0][0]:
-          # we have a double space
-          #addToDict(dictionary_1, str(mono_b2[0][firstIndex][0][0]), ' ')
-          addToDict(dictionary_1, str(mono_b2[0][firstIndex][0][0]), ' ')
-          print("addtodict "+str(mono_b2[0][firstIndex][0][0]))
-       
-
-  '''
-  '''
-  we know that ll and ss are certainly to get shadowed.
-  In fact, we know there are 115 mono and 141 bi
-  bi chara selection might vary at small scale
-  but the top ones are certainly not influenced so long as we have a large enough sample
-    
-  We know! that some alphabet that have chances of repeating (ngram_1 minOccurence == 0)
-  see '  ' 'ee' 'ss' 'nn' 'tt' 'ii' 'aa' 'rr' 'oo' 'll' 'dd' etc
-  but when transformed into bigram, their repeat chance decreased drastically
-  we only have a '    ' at rank 264, and 'IIII' at order 482... and they are way beyond the bigram 141 range so its rare to see them
-  So, we can conclude that, if we have a word that immediately repeats, then its very likely to be a monogram.
-  '''
-
-
-  '''
-  naiveRange = math.factorial(256)
-
-  possibilityRange = math.factorial(141)*math.factorial(115)
-  print("Possibility Range: "+str(possibilityRange))
-  print("Possibility Range reduction to  ["+str(possibilityRange / naiveRange)+"]")
-  print("Counting possible monogram...")
-  counter = 0
-
-  list_repeat_cipher = []
-  for x in C_mono_Freq:
-     if x[4] == 0:
-        counter += 1
-        list_repeat_cipher.append(x)
-        #print("possible monogram : "+str(x))
-  print("Counting Complete. possible monogram count ["+str(counter)+"]")
-
-
-  list_repeat_ref = []
-  for x in stats_ngram_1:
-     if x[4] == 0:
-        list_repeat_ref.append(x)
-  '''
-
-  '''
-  what can this counter tells us ?
-  it can tells us that, among the 47 monograms that can repeat, how many did not appear or, hidden.
-
-  lets take all repeat bigram that are most likely to appear (in frequency order, frequency decrease by around half at each rank gap)
-  1st rank : ll(r70) ss(r78)
-  2nd rank : mm(r133) nn(r137)
-  3rd rank : tt(r180)
-  4th rank : rr(r213) pp(r238) ff(r249) '  ' (we will not consider these)
-
-  these above, especially from rank 1 to rank 3, are very likely to be hidden. 
-  But since the algorithm is made to hide in order of appearance frequency, and since it must include monogram,
-  then it cannot hide the very low-frequency repeat monograms.
-
-  anyway. if we get at least A repeat-monogram count, that means 
-  possibilityRange = (141)! * (115-A)! * (47*46*45....47-A)!
-  
-  ...still too much for brute force
-
-  repeatRange = 1
-  for x in range(counter):
-     repeatRange *= (47-x)
-    
-  possibilityRange_reduce1 = math.factorial(141)*math.factorial(115-counter)*repeatRange
-  print("Possibility Range reduced by repeat factor : "+str(possibilityRange_reduce1))
-  print("Possibility Range reduction to ["+str( possibilityRange_reduce1 / possibilityRange)+"]")
-
-
-  lets first bruteforce replace the first 50 ngrams
-  '''
-  
-
-
-
-
-
-  #print("Building ngram-2 Dictionary")
-  #var = buildNgramDictionary(2, [stats_ngram_4], C_mono_Freq, 20, True)
-  #var = buildNgramDictionary(1, [stats_ngram_2], C_mono_Freq, 141, False)
-
-  #dictionary_1 = var[0]
-
-  #for x in var[1]:
-  # dictionary_1.update(x)
-
-  #print(dictionary_2)
-  #print(dictionary_1)
-
-  #addToDict(dictionary_1, str(C_mono_Freq[0][0][0]), 'e ')
-  '''  
-  next = False
-  for x in list_repeat_cipher:
-    next = False
-    for y in list_repeat_ref:
-        det = y[3]*0.05
-        if (x[4] == y[4] and abs(x[3] - y[3]) < det):
-            print("Adding to dictionary : ["+str(x[0][0])+"] -> ["+str(y[0][0])+"]")     
-            addToDict(dictionary_1, str(x[0][0]), str(y[0][0]))
-            next = True
-        if next: continue
-    if next: continue
-  '''
-
-  '''
-  Trying to match bigram to 4gram. failed
-  print("Adding to dictionary : ["+str(C_bi_Freq[0][0][0])+"] -> ["+str(stats_ngram_4[0][0][:2])+"]")    
-  print("Adding to dictionary : ["+str(C_bi_Freq[0][0][1])+"] -> ["+str(stats_ngram_4[0][0][2:])+"]")    
-  addToDict(dictionary_1, str(C_bi_Freq[0][0][0]), str(stats_ngram_4[0][0][:2]))
-  addToDict(dictionary_1, str(C_bi_Freq[0][0][1]), str(stats_ngram_4[0][0][2:]))
-  '''
-
-  '''
-  Trying to match monogram to 2gram, also failed
-  print("Adding to dictionary : ["+str(C_mono_Freq[0][0][0])+"] -> ["+str(stats_ngram_2[0][0])+"]")    
-  addToDict(dictionary_1, str(C_mono_Freq[0][0][0]), str(stats_ngram_2[0][0]))
-  '''
-
-  '''
-  hasHit = False
-  mono_index = 0
-  bi_index = 0
-  for x in C_mono_Freq:
-    hasHit = False
-    for i in range(bi_index, len(stats_ngram_2)):
-      if x[4] < stats_ngram_2[i][4]: continue
-      elif x[3]*1.2 < stats_ngram_2[i][3]:
-          bi_index = i
-          break
-      elif (abs(x[3] - stats_ngram_2[i][3]) < stats_ngram_2[i][3]*0.1):
-        word1 = str(x[0][0])
-        word2 = stats_ngram_2[i][0]
-        print("Adding to dictionary : ["+word1+"] -> ["+word2+"]")  
-        addToDict(dictionary_1, word1, word2)
-        bi_index = i+1
-        hasHit = True
-        break
-    if hasHit: continue
-    for i in range(mono_index, len(stats_ngram_1)):
-      if x[4] < stats_ngram_1[i][4]: continue
-      elif x[3]*1.2 < stats_ngram_1[i][3]:
-          mono_index = i
-          break
-      elif (abs(x[3] - stats_ngram_1[i][3]) < stats_ngram_1[i][3]*0.1):
-        word1 = str(x[0][0])
-        word2 = stats_ngram_1[i][0]
-        print("Adding to dictionary : ["+word1+"] -> ["+word2+"]")  
-        addToDict(dictionary_1, word1, word2)
-        mono_index =i+1
-        hasHit = True
-        break
-    if hasHit: continue
-  '''
-    
-      
-
-  
-
-  '''
-  lets narrow it even further.
-  bigram repeat chance ? this might happen.
-  '  ' bigram minfreq 0 rank 528
-  'II' bigram minfreq 0 rank 965/2. Lets assume first option
-
-  bi_freq_hack = 0
-  for x in C_bi_Freq:
-     if int(x[4]) == 0 and x[3] > 0.1:
-        bi_freq_hack += 1
-        word1 = str(x[0][0])
-        word2 = " "
-        print("Adding to dictionary : ["+word1+"] -> ["+word2+"]")   
-        addToDict(dictionary_1, word1, word2)
-        break
-
-  print("bigram hack test ["+str(bi_freq_hack)+"]")
-  
-  '''
-
-
 
 
 
@@ -592,52 +215,6 @@ def decrypt(C):
     
   #quit()
   M="".join(mfinal)
-  #print(M)
-  #entrez votre code ici.
-  #Vous pouvez créer des fonctions auxiliaires et adapter le code à votre façon mais decrypt dois renvoyer le message décrypté
-
-  '''
-
-    # Single check: ' ', 'e' and 's'
-  # highest frequency minval 1 : ' ', 'e'. high frequency is either ' ' and 'e', and 
-  monofreq = ngrams_count(C_cutBlock, 1,0,50)
-
-  for x in range(50):
-    f = checkFrequency(C_cutBlock, monofreq[x][0],1, False)
-    if (x < 3 and f[2] == 0 and f[1] > 5.0):
-      addToDict(dictionary, [monofreq[x][0], 's'])
-      print("S replaced!")
-    elif (x < 3 and f[1] > 10.0):
-      print("Alert, we have a possible space or e")
-
-      
-  checkRepeat_2 = checkRepeat(C_cutBlock, 2,3)
-  checkRepeat_2 += checkRepeat(C_cutBlock, 3,3)
-  checkRepeat_2 += checkRepeat(C_cutBlock, 4,3)
-  checkRepeat_2 += checkRepeat(C_cutBlock, 5,3)
-  checkRepeat_2 += checkRepeat(C_cutBlock, 6,3)
-  checkRepeat_2 += checkRepeat(C_cutBlock, 7,3)
-
-  print(checkRepeat_2)
-  checkRepeat_dict = {}
-  for x in checkRepeat_2:
-
-    if x[0] not in checkRepeat_dict:
-       checkRepeat_dict[x[0]] = 3
-    else:
-       checkRepeat_dict[x[0]] += 3
-
-    if x[1] not in checkRepeat_dict:
-       checkRepeat_dict[x[1]] = 1
-    else:
-       checkRepeat_dict[x[1]] += 1
-
-  # Reference https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
-  checkRepeat_dict_sort = dict(sorted(checkRepeat_dict.items(), key=lambda item:item[1]))
-
-  print(checkRepeat_dict_sort)
-'''
-
 
   return M
 
