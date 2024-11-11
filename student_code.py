@@ -76,18 +76,12 @@ def qualite_decrypt_text(M, dictionnaire_dechiffrement):
     return score
 
 #Utilise l'attaque probabilistique pour trouver la meilleure clé(?)
-def attack_proba(C, dictionnaire_dechiffrement, max_iteration=1000):
+def attack_proba(C, dictionnaire_dechiffrement, max_iteration=3):
     global key_now
     best_key = key_now.copy()
     best_score = qualite_decrypt_text(decrypt(C), dictionnaire_dechiffrement)
 
-#Algorithme de annealing pour trouver la meilleure clé (voir le pdf soumis pour les sources)
-    t= 1.0
-    t_min = 0.00001
-    alpha = 0.9
-
-    while t>t_min:
-        for _ in range(max_iteration):
+    for _ in range(max_iteration):
             nouvelle_key = best_key.copy()
             i,j = rnd.sample(list(best_key.keys()),2)
             nouvelle_key[i],nouvelle_key[j] = nouvelle_key[j],nouvelle_key[i]
@@ -96,15 +90,13 @@ def attack_proba(C, dictionnaire_dechiffrement, max_iteration=1000):
             M = decrypt(C)
             nouveau_score = qualite_decrypt_text(M,dictionnaire_dechiffrement)
 
-            if nouveau_score > best_score or math.exp((nouveau_score - best_score) / t) > rnd.random():
+            if nouveau_score > best_score:
                 best_key, best_score = nouvelle_key, nouveau_score
             else:
                 key_now= best_key
 
-        t *= alpha
-
     key_now = best_key
-
+    
 def initialise_decrypt_key(C):
     # Listes des URLs pour calculer les fréquences moyennes
     urls = [
@@ -131,7 +123,7 @@ def decrypt(C):
 
     dictionnaire_dechiffrement = key_now.copy()
 
-    attack_proba( C, dictionnaire_dechiffrement, 1000)
+    attack_proba( C, dictionnaire_dechiffrement, 3)
 
     M = ""
     segment_length = 8
