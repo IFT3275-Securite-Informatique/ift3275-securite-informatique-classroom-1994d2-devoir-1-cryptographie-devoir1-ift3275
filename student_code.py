@@ -156,7 +156,7 @@ def has_multiple_spaces(text):
 def meilleurOption(val):
     temps = time.time()
     temps_int = int(temps)
-    result1 = methode2(val, 1337, 20000)
+    result1 = methode2(val, 0, 20000)
 
     if result1 is None:
         result1 = methode2(val, temps_int - 3000, temps_int + 3000)
@@ -349,7 +349,7 @@ def decrypt(cryptogram):
     low_group, medium_group, high_group = split_symbols_by_count(symbols_by_freq)
 
     # Si le mapping initial ne donne pas un texte valide, essayer de trouver un mapping valide
-    max_attempts = 1  # Nombre maximum de tentatives
+    max_attempts = 30000  # Nombre maximum de tentatives
     attempts = 0
 
     while time.time() - start_time < time_limit and attempts < max_attempts:
