@@ -1,7 +1,7 @@
 from collections import Counter
 import math
 import random
-from crypt_1 import chiffrer, chiffrer2, cut_string_into_pairs, gen_key, load_text_from_web
+from crypt import chiffrer, chiffrer2, cut_string_into_pairs, gen_key, load_text_from_web
 
 import string
 
