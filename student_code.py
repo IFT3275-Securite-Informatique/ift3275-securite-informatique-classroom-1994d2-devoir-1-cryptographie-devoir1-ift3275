@@ -319,7 +319,7 @@ def decrypt(cryptogram):
 
 
     # Début du processus de décryptage
-    time_limit = 1200  # Limite de temps en secondes
+    time_limit = 1100  # Limite de temps en secondes
     start_time = time.time()
 
     best_mapping = initial_mapping.copy()
