@@ -71,12 +71,13 @@ def construire_dictionnaire_dechiffrement(frequences_chiffrees, frequences_moyen
 #Calcule la qualité du code déchiffré
 def qualite_decrypt_text(M, dictionnaire_dechiffrement):
     score = 0
-    for symbol in M:
-        score+= dictionnaire_dechiffrement.get(symbol,0)
+    for i in range(len(M)):
+        bicaracteres=M[i:i+1]
+        score+= dictionnaire_dechiffrement.get(bicaracteres,0)
     return score
 
 #Utilise l'attaque probabilistique pour trouver la meilleure clé(?)
-def attack_proba(C, dictionnaire_dechiffrement, max_iteration=1000):
+def attack_proba(C, dictionnaire_dechiffrement, max_iteration=5000):
     global key_now
     best_key = key_now.copy()
     best_score = qualite_decrypt_text(dechiffre_texte(C), dictionnaire_dechiffrement)
@@ -134,11 +135,11 @@ def decrypt(C):
     dictionnaire_dechiffrement = key_now.copy()
 
     # Attaque probabilistique
-    attack_proba( C, dictionnaire_dechiffrement, 1000)
+    attack_proba( C, dictionnaire_dechiffrement, 5000)
 
     return dechiffre_texte(C)
 
 #Inclure le cryptogramme ici
-C = "11010101011011000111010011001111000011100110110011001111110011000000110111001010010111010111111011001100011011001100111101101100011000011100111100001110011011001100111111001100000011011100101001011101011111101100110001101100011101001100111100001110011011001100111100111111000100100000011000111101000100100110110011001111011011000110000110010101000011000000111001101100110011110010000011001110011000010110110001110100110011110000111001101100110011110010000011001110011000010110110011001111011011000110000111001111000011100110110011001111001111110001001000000110001111010001001001101100011111001100111101011010001011011100101011001111011011001101010111001111"
+C = "cryptogramme quel conque"
 decrypted_text= decrypt(C)
 print(decrypted_text)
