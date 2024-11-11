@@ -101,24 +101,13 @@ def cutInOctets(C):
    return [C[i:i+8] for i in range (0, len(C), 8)]
 
 #for testing purposes
-dictionnaire_cryptogramme = {}
-
 def decrypt(C):
     
-    global dictionnaire_cryptogramme    #for testing
-
     #calculer les stats du chiffrage 
     cypherOctets = cutInOctets(C)            #découpage de cypher en tableau d'octet
-    #message = ['λ'] * len(cypherOctets)
 
     #Tuple d'octets et la somme de chaque octet dans le message crypté
     octetsOccurences = sorted(octetsByOccurences(cypherOctets), key=lambda item: item[1], reverse=True)
-
-    #remplace les 'e ' aux bons endroits
-   # for i in range (len(cypherOctets)):
-    #    if(cypherOctets[i] == octetsOccurences[0][0]):
-     #       message[i] = symbolesOccurences[0][0]
-
 
     occurencesPrevious = [0] * 256 # array de 256 zeros
     occurencesNext = [0] * 256
@@ -136,17 +125,14 @@ def decrypt(C):
     avant_e_space = list(zip(octets, occurencesPrevious))
     apres_e_space = list(zip(octets, occurencesNext))
 
-
-
-
-    sortedAvant = sorted(avant_e_space, key=lambda x: x[1], reverse=True)
-    sortedApres = sorted(apres_e_space, key=lambda x: x[1], reverse=True)
+    sortedAvant_e_space = sorted(avant_e_space, key=lambda x: x[1], reverse=True)
+    sortedApres_e_space = sorted(apres_e_space, key=lambda x: x[1], reverse=True)
 
     occurencesPrevious_s_space = [0] * 256 # array de 256 zeros
     occurencesNext_s_space = [0] * 256
 
     for i in range(len(cypherOctets)): #compte les occureces des octets avant et apres 's '
-        if(cypherOctets[i] == octetsOccurences[0][1]): #si on a un 's '
+        if(cypherOctets[i] == octetsOccurences[1][0]): #si on a un 's '
 
             if(i>0):
                 occurencesPrevious_s_space[int(cypherOctets[i-1], 2)] += 1 #increment occurencePrevious à l'index octet convertit en int
@@ -156,87 +142,50 @@ def decrypt(C):
     avant_s_space = list(zip(octets, occurencesPrevious_s_space))
     apres_s_space = list(zip(octets, occurencesNext_s_space))
 
-
-
-
     sortedAvant_s_space = sorted(avant_s_space, key=lambda x: x[1], reverse=True)
     sortedApres_s_space = sorted(apres_s_space, key=lambda x: x[1], reverse=True)
+    
 
     dictToutSymbol= dict(symbolesOccurences)
     dictToutBits= dict(octetsOccurences)
     dictChiffreVersLettre = dict(list(zip(dictToutBits, dictToutSymbol)))
 
     for i in range(0,4):
-      if (sortedAvant[1][0] == sortedApres[i][0]):
-        swap(dictChiffreVersLettre, sortedAvant[1][0], 'qu')
+      if (sortedAvant_e_space[1][0] == sortedApres_e_space[i][0]):
+        swap(dictChiffreVersLettre, sortedAvant_e_space[1][0], 'qu')
     swap(dictChiffreVersLettre, sortedAvant_s_space[0][0], 'le')
-    swap(dictChiffreVersLettre, sortedAvant[0][0], ' d')
-    swap(dictChiffreVersLettre, sortedApres[0][0], 'de')
+    swap(dictChiffreVersLettre, sortedAvant_e_space[0][0], ' d')
+    swap(dictChiffreVersLettre, sortedApres_e_space[0][0], 'de')
 
+    sortedAvant_e_space = sorted(avant_e_space, key=lambda x: x[1], reverse=True)
+    sortedApres_e_space = sorted(apres_e_space, key=lambda x: x[1], reverse=True)
 
+    if(sortedAvant_e_space[0][0] == sortedApres_e_space[0][0]):
+        dictChiffreVersLettre[sortedAvant_e_space[0][0]] = 'qu'
+    else:
+        swap(dictChiffreVersLettre, sortedAvant_e_space[0][0], ' d')
+        swap(dictChiffreVersLettre, sortedApres_e_space[0][0], 'de')
 
-    #for i in range (len(cypherOctets)):
-    #    if(cypherOctets[i] == octetsOccurences[0][0]):                  #si 'e '
-    #        if(i > 0):
-    #            if(cypherOctets[i-1] == sortedAvant[0][0]):             #si char est un 'd '
-    #                #imprimer pour tester le swap voir si tout est bien swappé
-    #                oldVal = dictChiffreVersLettre[cypherOctets[i-1]]
-    #                print(oldVal)
-    #                oldKey = None
-    #                for key, val in dictChiffreVersLettre.items():
-    #                  if val == ' d':
-    #                     oldKey = key
-    #                  break
-                    #swap keys
-    #                dictChiffreVersLettre[oldKey] = oldVal
-    #                dictChiffreVersLettre[cypherOctets[i-1]] = ' d'
-    #        if(i < len(cypherOctets)-1):
-    #            if(cypherOctets[i+1] == sortedApres[0][0]):
-    #                #message[i+1] = 'de'
-     #               oldVal = dictChiffreVersLettre[cypherOctets[i+1]]
-     #               oldKey = None
-     #               for key, val in dictChiffreVersLettre.items():
-     #                 if val == 'de':
-     #                    oldKey = key
-     #                 break
+   #déduire 'de'
+    candidat1 = sortedApres_e_space[0]
+    candidat2 = sortedApres_s_space[0]
+    candidat3 = sortedAvant_s_space[2]
 
-                    #swap keys
-     #               dictChiffreVersLettre[oldKey] = oldVal
-     #               dictChiffreVersLettre[cypherOctets[i+1]] = 'de'
+    if(candidat1 == candidat2):
+        swap(dictChiffreVersLettre, candidat1, ' de')
+    elif(candidat2 == candidat3):
+        swap(dictChiffreVersLettre, candidat2, ' de')
+    elif(candidat3 == candidat1):
+        swap(dictChiffreVersLettre, candidat3, ' de')      
 
-    #print(tupleBits)
-    #print(occurencesSymboles)
-    #print("student_code stats tupleBits", tupleBits)
-    #mapper chaque chiffre avec la lettre
-    new_array = [(symbolesOccurences[i][0], octetsOccurences[i][0]) for i in range(len(symbolesOccurences))]
-    #print(new_array)
-    
-    
-    
-
-    #print("student_code dictionnaire", dictChiffreVersLettre)
     dictionnaire_cryptogramme = dictChiffreVersLettre
-    #temp = dictionnaire_cryptogramme.get(sortedAvant[0][0])
-    #dictionnaire_cryptogramme[sortedAvant[0][0]] = ' d'
-    #dictionnaire_cryptogramme[sortedApres[0][0]] = 'de'
-    #print(dictionnaire_cryptogramme)
-
-    #dechiffrer le message chiffré avec les occurences
-
-
+    
     M = ""
     for cypher in cypherOctets:
       char = dictChiffreVersLettre.get(cypher)
       M = M + char
 
-    #print("**************MESSAGE DÉCRYPTÉ***************\n", M)
-
-    #M = ''.join(message)
-
     return M
-
-def dict_cryptogramme():
-   return dictionnaire_cryptogramme
 
 
 def octetsByOccurences(cypherOctets):
@@ -251,11 +200,7 @@ def octetsByOccurences(cypherOctets):
 
 
 def swap(dictChiffreVersLettre, cypher, symbol):
-    #print("BON CYPHER: ", cypher)
-    #print("BON SYMBOL", symbol)
-    #print("DICT AVANT ******", dictChiffreVersLettre)
     oldVal = dictChiffreVersLettre[cypher]
-    #print("ANCIENNE VALEUR: ", oldVal)
     oldKey = None
     for key, val in dictChiffreVersLettre.items():
       if val == symbol:
@@ -264,4 +209,4 @@ def swap(dictChiffreVersLettre, cypher, symbol):
 
     dictChiffreVersLettre[oldKey] = oldVal
     dictChiffreVersLettre[cypher] = symbol
-    #print("DICT APRES ******", dictChiffreVersLettre)
+    
